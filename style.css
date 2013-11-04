@@ -1,14 +1,16 @@
-* { 
-  margin: 0; 
-  padding: 0; 
+* {
+  margin: 0;
+  padding: 0;
 }
 
-body { 
-  overflow: hidden; 
+body {
+  overflow: hidden;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: lighter;
+  background: black;
 }
 
-canvas { 
-  display: none; 
+canvas {
+  display: none;
+  background: black;
 }

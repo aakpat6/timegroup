@@ -9,23 +9,27 @@ paper.setup('canvas');
 define(function(require) {
   'use strict';
 
-  var Comm = require('comm');
+  var State = require('state');
+  var Renderer = require('renderer');
 
   var Game = {};
 
   Game.start = function() {
-    Game.text = new PointText(new Point(300, 50));
-    Game.text.justification = 'center';
-    Game.text.style = {fontSize: 20};
-    Game.text.fillColor = 'black';
+    // var width = view.bounds.width;
+    // var height = view.bounds.height;
+    // Game.text = new PointText(new Point(width / 2, height / 2));
+    // Game.text.justification = 'center';
+    // Game.text.style = {fontSize: '70px'};
+    // Game.text.fillColor = 'white';
   };
 
   Game.loop = function(e) {
-    Game.text.content = Comm.count;
+    // Game.text.content = State.count;
+    Renderer.renderShapes(State.shapes);
   };
 
   tool.onMouseDown = function(event) {
-    Comm.setCount(Comm.count + 1);
+    // State.incrementCount();
   };
 
   view.onFrame = _.bind(Game.loop, Game);
