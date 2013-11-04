@@ -22,6 +22,7 @@ define(function(require) {
   Game.loop = function() {
     Renderer.renderInstruction(State.currentInstruction);
     Renderer.renderShapes(State.shapes, function(shape) {
+      console.log('Clicked on the ' + shape.toString());
       if (shape.kind === State.currentInstruction.kind) {
         Game.reloadInstruction();
       }

@@ -3,8 +3,10 @@
  */
 
 define(function(require) {
-  var Shape = function(kind) {
-    this.kind = kind;
+  var Shape = function(features) {
+    console.log(features);
+    this.kind = features.kind;
+    this.color = features.color;
     this.path = null;
   };
 
@@ -13,19 +15,16 @@ define(function(require) {
 
     var drawTriangle = function(center, len) {
       var triangle = new Path.RegularPolygon(center, 3, len);
-      triangle.fillColor = 'red';
       return triangle;
     };
 
     var drawCircle = function(center, radius) {
       var circle = new Path.Circle(center, radius * 0.8);
-      circle.fillColor = 'blue';
       return circle;
     };
 
     var drawSquare = function(center, len) {
       var square = new Path.RegularPolygon(center, 4, len);
-      square.fillColor = 'green';
       return square;
     };
 
@@ -42,10 +41,15 @@ define(function(require) {
     }
 
     var self = this;
+    this.path.fillColor = this.color;
     this.path.onClick = function() {
       callback(self);
     };
 
+  };
+
+  Shape.prototype.toString = function() {
+    return this.color + ' ' + this.kind;
   };
 
   return Shape;
