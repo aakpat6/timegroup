@@ -28,7 +28,7 @@ define(function(require) {
     instructionText.justification = 'left';
     instructionText.style = {fontSize: '50px'};
     instructionText.fillColor = 'white';
-    instructionText.content = shape.kind;
+    instructionText.content = shape.toString();
   };
 
   return Renderer;
