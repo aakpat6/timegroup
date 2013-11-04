@@ -11,25 +11,25 @@ define(function(require) {
 
   var State = require('state');
   var Renderer = require('renderer');
+  var Util = require('util');
 
   var Game = {};
 
   Game.start = function() {
-    // var width = view.bounds.width;
-    // var height = view.bounds.height;
-    // Game.text = new PointText(new Point(width / 2, height / 2));
-    // Game.text.justification = 'center';
-    // Game.text.style = {fontSize: '70px'};
-    // Game.text.fillColor = 'white';
+    Game.reloadInstruction();
   };
 
-  Game.loop = function(e) {
-    // Game.text.content = State.count;
-    Renderer.renderShapes(State.shapes);
+  Game.loop = function() {
+    Renderer.renderInstruction(State.currentInstruction);
+    Renderer.renderShapes(State.shapes, function(shape) {
+      if (shape.kind === State.currentInstruction.kind) {
+        Game.reloadInstruction();
+      }
+    });
   };
 
-  tool.onMouseDown = function(event) {
-    // State.incrementCount();
+  Game.reloadInstruction = function() {
+    State.currentInstruction = Util.randElem(State.shapes);
   };
 
   view.onFrame = _.bind(Game.loop, Game);

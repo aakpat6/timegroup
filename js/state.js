@@ -7,27 +7,20 @@ define(function(require) {
 
   var State = {};
 
+  var Util = require('util');
+  var Shape = require('shape');
+
   var countRef = new Firebase('https://timegroup.firebaseio.com/count');
 
   var shapeRef = new Firebase('https://timegroup.firebaseio.com/shapes');
 
   shapeRef.once('value', function(snapshot) {
-    State.shapes = snapshot.val();
-  });
-
-  countRef.once('value', function(snapshot) {
+    State.shapes = _.map(snapshot.val(), function(x) {
+      return new Shape(x);
+    });
+    State.currentInstruction = Util.randElem(State.shapes);
     document.getElementById('canvas').style.display = 'block';
   });
-
-  countRef.on('value', function(snapshot) {
-    State.count = snapshot.val();
-  });
-
-  State.incrementCount = function() {
-    countRef.transaction(function(cur) {
-      return cur + 1;
-    });
-  };
 
   return State;
 });
