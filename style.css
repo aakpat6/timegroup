@@ -8,9 +8,12 @@ body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: lighter;
   background: black;
+  height: 100%;
 }
 
 canvas {
-  display: none;
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
   background: black;
 }

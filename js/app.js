@@ -7,7 +7,7 @@
 
   // Prevent JS files from getting cached.
   requirejs.config({urlArgs: 'bust=' + (new Date()).getTime()});
-    
+
   var game = require('game');
   game.start();
 });

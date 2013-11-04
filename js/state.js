@@ -19,7 +19,7 @@ define(function(require) {
       return new Shape(x);
     });
     State.currentInstruction = Util.randElem(State.shapes);
-    document.getElementById('canvas').style.display = 'block';
+    document.getElementById('canvas').style.visibility = 'visible';
   });
 
   return State;

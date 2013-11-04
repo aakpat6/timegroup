@@ -33,6 +33,5 @@ define(function(require) {
   };
 
   view.onFrame = _.bind(Game.loop, Game);
-
   return Game;
 });

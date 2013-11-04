@@ -23,6 +23,8 @@ define(function(require) {
   var instructionText = new PointText(new Point(50, 50));
 
   Renderer.renderInstruction = function(shape) {
+    if (!shape) return;
+
     instructionText.justification = 'left';
     instructionText.style = {fontSize: '50px'};
     instructionText.fillColor = 'white';
