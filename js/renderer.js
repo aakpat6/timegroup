@@ -31,5 +31,14 @@ define(function(require) {
     instructionText.content = shape.toString();
   };
 
+  var userCountText = new PointText(new Point(50, 150));
+
+  Renderer.renderUserCount = function(count) {
+    userCountText.justification = 'left';
+    userCountText.style = {fontSize: '50px'};
+    userCountText.fillColor = 'white';
+    userCountText.content = 'Users online: ' + count;
+  };
+
   return Renderer;
 });

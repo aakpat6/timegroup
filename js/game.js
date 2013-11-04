@@ -16,21 +16,18 @@ define(function(require) {
   var Game = {};
 
   Game.start = function() {
-    Game.reloadInstruction();
+    State.reloadInstruction();
   };
 
   Game.loop = function() {
     Renderer.renderInstruction(State.currentInstruction);
+    Renderer.renderUserCount(State.users ? State.users.length : 0);
     Renderer.renderShapes(State.shapes, function(shape) {
       console.log('Clicked on the ' + shape.toString());
-      if (shape.kind === State.currentInstruction.kind) {
-        Game.reloadInstruction();
+      if (shape === State.currentInstruction) {
+        State.reloadInstruction();
       }
     });
-  };
-
-  Game.reloadInstruction = function() {
-    State.currentInstruction = Util.randElem(State.shapes);
   };
 
   view.onFrame = _.bind(Game.loop, Game);

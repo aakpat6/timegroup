@@ -14,5 +14,13 @@ define(function(require) {
     return arr[i];
   };
 
+  Util.randString = function(len) {
+    return Math.random().toString(35).substr(2, len);
+  };
+
+  Util.connectFirebase = function(url) {
+    return new Firebase('https://timegroup.firebaseio.com' + url);
+  };
+
   return Util;
 });
