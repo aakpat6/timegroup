@@ -8,27 +8,18 @@ define(function(require) {
   var Renderer = {};
 
   Renderer.renderShapes = function(shapes, callback) {
-    if (!shapes) return;
-
-    var width = view.bounds.width;
-    var height = view.bounds.height;
-
-    var paths = [];
-
-    for (var i = 0; i < shapes.length; i++) {
-      shapes[i].draw(callback);
-    }
+    _.forEach(shapes, function(s) {
+      s.draw(callback);
+    });
   };
 
   var instructionText = new PointText(new Point(50, 50));
 
   Renderer.renderInstruction = function(shape) {
-    if (!shape) return;
-
     instructionText.justification = 'left';
     instructionText.style = {fontSize: '50px'};
     instructionText.fillColor = 'white';
-    instructionText.content = shape.toString();
+    instructionText.content = shape ? shape.toString() : '';
   };
 
   var userCountText = new PointText(new Point(50, 150));

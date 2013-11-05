@@ -4,7 +4,6 @@
 
 define(function(require) {
   var Shape = function(features) {
-    console.log(features);
     this.kind = features.kind;
     this.color = features.color;
     this.path = null;

@@ -9,8 +9,9 @@ define(function(require) {
 
   var Util = require('util');
   var Shape = require('shape');
+  var C = require('constants');
 
-  State.userId = Util.randString(32);
+  State.userId = Util.randString(C.UID_LEN);
 
   State.reloadInstruction = function() {
     State.currentInstruction = Util.randElem(State.shapes);
