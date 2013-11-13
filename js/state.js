@@ -14,21 +14,23 @@ define(function(require) {
   State.userId = Util.randString(C.UID_LEN);
 
   State.reloadInstruction = function() {
-    State.currentInstruction = Util.randElem(State.shapes);
+    if (!State.users) return;
+
+    _.forEach(State.shapes, function(s) {
+      s.remove();
+    });
+
+    var buckets = Util.makeBuckets(State.shapes, State.users.length);
+    var i = State.users.indexOf(State.userId);
+    State.currentInstruction = Util.randElem(buckets[i]);
+    State.shapesToRender = buckets[i];
   };
 
   State.loadUsers = function(users) {
     State.users = users;
     State.userIdx = _.indexOf(State.users, State.userId);
+    State.reloadInstruction();
   };
-
-  var userRef = Util.connectFirebase('/users');
-  var connection = userRef.push(State.userId);
-  connection.onDisconnect().remove();
-
-  userRef.on('value', function(snapshot) {
-    State.loadUsers(_.toArray(snapshot.val()));
-  });
 
   var shapeRef = Util.connectFirebase('/shapes');
 
@@ -38,6 +40,15 @@ define(function(require) {
     });
     State.reloadInstruction();
     document.getElementById('canvas').style.visibility = 'visible';
+  });
+
+  var userRef = Util.connectFirebase('/users');
+  var connection = userRef.push(State.userId);
+  connection.onDisconnect().remove();
+
+  userRef.on('value', function(snapshot) {
+    var users = _.toArray(snapshot.val());
+    State.loadUsers(users);
   });
 
   return State;

@@ -47,6 +47,13 @@ define(function(require) {
 
   };
 
+  Shape.prototype.remove = function() {
+    if (this.path) {
+      this.path.remove();
+      this.path = null;
+    }
+  };
+
   Shape.prototype.toString = function() {
     return this.color + ' ' + this.kind;
   };
