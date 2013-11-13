@@ -15,20 +15,18 @@ define(function(require) {
 
   State.reloadInstruction = function() {
     if (!State.users) return;
-
-    _.forEach(State.shapes, function(s) {
-      s.remove();
-    });
-
-    var buckets = Util.makeBuckets(State.shapes, State.users.length);
-    var i = State.users.indexOf(State.userId);
-    State.currentInstruction = Util.randElem(buckets[i]);
-    State.shapesToRender = buckets[i];
+    State.currentInstruction = Util.randElem(State.shapesToRender);
   };
 
   State.loadUsers = function(users) {
     State.users = users;
     State.userIdx = _.indexOf(State.users, State.userId);
+    _.forEach(State.shapes, function(s) {
+      s.remove();
+    });
+    State.buckets = Util.makeBuckets(State.shapes, State.users.length);
+    var i = State.users.indexOf(State.userId);
+    State.shapesToRender = State.buckets[i];
     State.reloadInstruction();
   };
 
@@ -47,6 +45,7 @@ define(function(require) {
   connection.onDisconnect().remove();
 
   userRef.on('value', function(snapshot) {
+    if (State.users === snapshot.val()) return;
     var users = _.toArray(snapshot.val());
     State.loadUsers(users);
   });
