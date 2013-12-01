@@ -15,7 +15,21 @@ define(function(require) {
 
   State.reloadInstruction = function() {
     if (!State.users) return;
-    State.currentInstruction = Util.randElem(State.shapesToRender);
+    State.currentInstruction = Util.randElem(State.buckets[(State.userIdx ) % (State.users.length)]);
+    if (State.currentInstruction) {
+      userConnection.update({
+        instruction: {
+          kind: State.currentInstruction.kind,
+          color: State.currentInstruction.color
+        }
+      }, function() {
+        State.instructionToRender = new Shape(State.instructions[(State.userIdx + 1) % (State.instructions.length)]);
+      });
+    }
+  };
+
+  State.refreshInstruction = function() {
+    State.instructionToRender = new Shape(State.instructions[(State.userIdx + 1) % (State.instructions.length)]);
   };
 
   State.loadUsers = function(users) {
@@ -25,8 +39,7 @@ define(function(require) {
       s.remove();
     });
     State.buckets = Util.makeBuckets(State.shapes, State.users.length);
-    var i = State.users.indexOf(State.userId);
-    State.shapesToRender = State.buckets[i];
+    State.shapesToRender = State.buckets[State.userIdx];
     State.reloadInstruction();
   };
 
@@ -41,13 +54,18 @@ define(function(require) {
   });
 
   var userRef = Util.connectFirebase('/users');
-  var connection = userRef.push(State.userId);
-  connection.onDisconnect().remove();
+  var userConnection = userRef.push({
+    id: State.userId
+  });
+  userConnection.onDisconnect().remove();
 
   userRef.on('value', function(snapshot) {
-    if (State.users === snapshot.val()) return;
-    var users = _.toArray(snapshot.val());
-    State.loadUsers(users);
+    var users = _.pluck(_.toArray(snapshot.val()), 'id');
+    State.instructions = _.pluck(_.toArray(snapshot.val()), 'instruction');
+    if (!State.users || _.contains(State.users, undefined) || users.length !== State.users.length) {
+      State.loadUsers(users);
+    }
+    State.refreshInstruction();
   });
 
   return State;

@@ -20,12 +20,14 @@ define(function(require) {
   };
 
   Game.loop = function() {
-    Renderer.renderInstruction(State.currentInstruction);
+    Renderer.renderInstruction(State.instructionToRender);
     Renderer.renderUserCount(State.users ? State.users.length : 0);
     Renderer.renderShapes(State.shapesToRender, function(shape) {
-      if (shape === State.currentInstruction) {
-        State.reloadInstruction();
-      }
+      _.forEach(State.instructions, function(instruction) {
+        if (instruction.kind === shape.kind && instruction.color === shape.color) {
+          State.reloadInstruction();
+        }
+      });
     });
   };
 
