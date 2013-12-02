@@ -4,6 +4,7 @@
 
 define(function(require) {
   return {
-    UID_LEN: 32
+    UID_LEN: 32,
+    START_TIME: 10.0
   };
 });

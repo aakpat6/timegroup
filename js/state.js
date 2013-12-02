@@ -10,8 +10,10 @@ define(function(require) {
   var Util = require('util');
   var Shape = require('shape');
   var C = require('constants');
-
+  State.timer = C.START_TIME; 
   State.userId = Util.randString(C.UID_LEN);
+  var time_interval;
+
 
   State.reloadInstruction = function() {
     if (!State.users) return;
@@ -38,6 +40,7 @@ define(function(require) {
     _.forEach(State.shapes, function(s) {
       s.remove();
     });
+    State.isHost = (State.userIdx === 0);
     State.buckets = Util.makeBuckets(State.shapes, State.users.length);
     State.shapesToRender = State.buckets[State.userIdx];
     State.reloadInstruction();
@@ -53,7 +56,19 @@ define(function(require) {
     document.getElementById('canvas').style.visibility = 'visible';
   });
 
+  var timeRef = Util.connectFirebase('/timer');
   var userRef = Util.connectFirebase('/users');
+
+  State.updateTimer = function() {
+      if (State.isHost) {
+        State.timer = State.timer - 0.1;
+        timeRef.child('time').set(State.timer);
+      } 
+  };
+
+  timeRef.on('value', function(snapshot) {
+      State.timer = snapshot.val();
+  });
   var userConnection = userRef.push({
     id: State.userId
   });
@@ -68,5 +83,7 @@ define(function(require) {
     State.refreshInstruction();
   });
 
+  time_interval = setInterval(State.updateTimer, 100);
+  
   return State;
 });
