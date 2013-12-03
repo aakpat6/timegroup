@@ -28,7 +28,7 @@ define(function(require) {
   scoreText.fillColor = 'white';
 
   Renderer.renderScore = function(score) {
-    scoreText.content = 'Score: ' + (score >= 0 ? score : '');
+    scoreText.content = 'Score: ' + (_.isNumber(score) && !_.isNaN(score) ? score : '');
   };
 
   var timerText = new PointText(new Point(50, 350));
