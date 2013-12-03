@@ -21,6 +21,8 @@ define(function(require) {
 
   Game.loop = function() {
     Renderer.renderInstruction(State.instructionToRender);
+    Renderer.renderScore(State.score);
+    Renderer.renderTimer(Math.round(State.timer * 10) / 10);
     Renderer.renderUserCount(State.users ? State.users.length : 0);
     Renderer.renderShapes(State.shapesToRender, function(shape) {
       _.forEach(State.instructions, function(instruction) {
