@@ -66,18 +66,16 @@ define(function(require) {
   var userRef = Util.connectFirebase('/users');
 
   State.updateTimer = function() {
-      if (State.isHost) {
-        State.timer = State.timer <= 0 ? C.START_TIME : State.timer - 0.1;
-        console.log(State.timer);
-        timeRef.child('time').set(State.timer);
-      } 
+    State.timer = State.timer - 0.1;
+    if ((State.timer <= 0) && (State.isHost)) {
+      timeRef.child('time').set(Util.randString(32));
+    }
   };
 
   timeRef.on('value', function(snapshot) {
-    if (!State.isHost) {
-      State.timer = snapshot.val().time;
-    }
+    State.timer = C.START_TIME;
   });
+  
   var userConnection = userRef.push({
     id: State.userId
   });
@@ -108,5 +106,9 @@ define(function(require) {
     scoreRef.set(0);
   };
   
+  scoreRef.on('value', function(snapshot) {
+    State.score = snapshot.val();
+  });
+
   return State;
 });
