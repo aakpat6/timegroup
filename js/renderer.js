@@ -13,40 +13,20 @@ define(function(require) {
     });
   };
 
-  var instructionText = new PointText(new Point(50, 50));
-  instructionText.justification = 'left';
-  instructionText.style = {fontSize: '24px'};
-  instructionText.fillColor = 'white';
-
   Renderer.renderInstruction = function(shape) {
-    instructionText.content = shape ? shape.toString() : '';
+    document.getElementById('instruction').innerHTML = shape ? shape.toString() : '';
   };
-
-  var scoreText = new PointText(new Point(50, 150));
-  scoreText.justification = 'left';
-  scoreText.style = {fontSize: '24px'};
-  scoreText.fillColor = 'white';
 
   Renderer.renderScore = function(score) {
-    scoreText.content = 'Score: ' + (_.isNumber(score) && !_.isNaN(score) ? score : '');
+    document.getElementById('score').innerHTML = score;
   };
-
-  var timerText = new PointText(new Point(50, 200));
-  timerText.justification = 'left';
-  timerText.style = {fontSize: '24px'};
-  timerText.fillColor = 'white';
 
   Renderer.renderTimer = function(time) {
-    timerText.content = 'Time: ' + (time >= 0 ? time + ' s': '');
+    document.getElementById('time').setAttribute('value', time);
   };
 
-  var userCountText = new PointText(new Point(50, 100));
-  userCountText.justification = 'left';
-  userCountText.style = {fontSize: '24px'};
-  userCountText.fillColor = 'white';
-
   Renderer.renderUserCount = function(count) {
-    userCountText.content = 'Users online: ' + count;
+    document.getElementById('user-count').innerHTML = count;
   };
 
   return Renderer;

@@ -17,3 +17,31 @@ canvas {
   height: 100%;
   background: black;
 }
+
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  padding: 20px 30px;
+  font-variant: small-caps;
+  font-family: monospace;
+  font-size: 24px;
+}
+
+#instruction {
+  font-size: 36px;
+  margin-bottom: 5px;
+}
+
+progress {
+  background-color: white;
+}
+
+progress::-webkit-progress-bar {
+  background-color: black;
+}
+
+progress::-webkit-progress-value {
+  background-color: white;
+}
