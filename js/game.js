@@ -25,6 +25,7 @@ define(function(require) {
     Renderer.renderShapes(State.shapesToRender, function(shape) {
       _.forEach(State.instructions, function(instruction) {
         if (instruction.kind === shape.kind && instruction.color === shape.color) {
+          State.updateScore(1);
           State.reloadInstruction();
         }
       });

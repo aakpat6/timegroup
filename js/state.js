@@ -10,7 +10,8 @@ define(function(require) {
   var Util = require('util');
   var Shape = require('shape');
   var C = require('constants');
-  State.timer = C.START_TIME; 
+  State.timer = C.START_TIME;
+  State.score = 0; 
   State.userId = Util.randString(C.UID_LEN);
   var time_interval;
 
@@ -41,6 +42,10 @@ define(function(require) {
       s.remove();
     });
     State.isHost = (State.userIdx === 0);
+    if (State.isHost) {
+      State.resetTimer();
+      State.resetScore();
+    }
     State.buckets = Util.makeBuckets(State.shapes, State.users.length);
     State.shapesToRender = State.buckets[State.userIdx];
     State.reloadInstruction();
@@ -57,17 +62,21 @@ define(function(require) {
   });
 
   var timeRef = Util.connectFirebase('/timer');
+  var scoreRef = Util.connectFirebase('/score');
   var userRef = Util.connectFirebase('/users');
 
   State.updateTimer = function() {
       if (State.isHost) {
-        State.timer = State.timer - 0.1;
+        State.timer = State.timer <= 0 ? C.START_TIME : State.timer - 0.1;
+        console.log(State.timer);
         timeRef.child('time').set(State.timer);
       } 
   };
 
   timeRef.on('value', function(snapshot) {
-      State.timer = snapshot.val();
+    if (!State.isHost) {
+      State.timer = snapshot.val().time;
+    }
   });
   var userConnection = userRef.push({
     id: State.userId
@@ -84,6 +93,20 @@ define(function(require) {
   });
 
   time_interval = setInterval(State.updateTimer, 100);
+
+  State.resetTimer = function() {
+    timeRef.child('time').set(C.START_TIME);
+  };
+
+  State.updateScore = function(incr) {
+    scoreRef.transaction(function(current_value) {
+      return current_value + incr;
+    });
+  };
+
+  State.resetScore = function() {
+    scoreRef.set(0);
+  };
   
   return State;
 });
