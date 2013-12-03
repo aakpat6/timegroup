@@ -28,7 +28,7 @@ define(function(require) {
   scoreText.fillColor = 'white';
 
   Renderer.renderScore = function(score) {
-    scoreText.content = 'Score: ' + (score ? score : '');
+    scoreText.content = 'Score: ' + (score >= 0 ? score : '');
   };
 
   var timerText = new PointText(new Point(50, 350));
@@ -37,7 +37,7 @@ define(function(require) {
   timerText.fillColor = 'white';
 
   Renderer.renderTimer = function(time) {
-    timerText.content = 'Time: ' + (time ? time + ' s': '');
+    timerText.content = 'Time: ' + (time >= 0 ? time + ' s': '');
   };
 
   var userCountText = new PointText(new Point(50, 150));

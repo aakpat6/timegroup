@@ -29,7 +29,7 @@ define(function(require) {
 
     var width = view.bounds.width;
     var height = view.bounds.height;
-    var p = new Point(Math.random() * (width - 400) + 200,
+    var p = new Point(Math.random() * (width - 800) + 600,
                       Math.random() * (height - 400) + 200);
     if (this.kind === 'triangle') {
       this.path = drawTriangle(p, 100);
