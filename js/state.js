@@ -68,14 +68,14 @@ define(function(require) {
   State.updateTimer = function() {
     State.timer = State.timer - 0.1;
     if ((State.timer <= 0) && (State.isHost)) {
-      timeRef.child('time').set(Util.randString(32));
+      State.resetTimer();
     }
   };
 
   timeRef.on('value', function(snapshot) {
     State.timer = C.START_TIME;
   });
-  
+
   var userConnection = userRef.push({
     id: State.userId
   });
@@ -93,7 +93,7 @@ define(function(require) {
   time_interval = setInterval(State.updateTimer, 100);
 
   State.resetTimer = function() {
-    timeRef.child('time').set(C.START_TIME);
+    timeRef.child('time').set(Util.randString(32));
   };
 
   State.updateScore = function(incr) {
