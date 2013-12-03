@@ -4,6 +4,7 @@
 
 define(function(require) {
   var Shape = function(features) {
+    if (!features) return;
     this.kind = features.kind;
     this.color = features.color;
     this.path = null;
@@ -29,8 +30,7 @@ define(function(require) {
 
     var width = view.bounds.width;
     var height = view.bounds.height;
-    var p = new Point(Math.random() * (width - 800) + 600,
-                      Math.random() * (height - 400) + 200);
+    var p = new Point(_.random(200, width - 100), _.random(100, height - 100));
     if (this.kind === 'triangle') {
       this.path = drawTriangle(p, 100);
     } else if (this.kind === 'circle') {

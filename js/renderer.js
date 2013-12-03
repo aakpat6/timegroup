@@ -15,34 +15,34 @@ define(function(require) {
 
   var instructionText = new PointText(new Point(50, 50));
   instructionText.justification = 'left';
-  instructionText.style = {fontSize: '50px'};
+  instructionText.style = {fontSize: '24px'};
   instructionText.fillColor = 'white';
 
   Renderer.renderInstruction = function(shape) {
     instructionText.content = shape ? shape.toString() : '';
   };
 
-  var scoreText = new PointText(new Point(50, 250));
+  var scoreText = new PointText(new Point(50, 150));
   scoreText.justification = 'left';
-  scoreText.style = {fontSize: '50px'};
+  scoreText.style = {fontSize: '24px'};
   scoreText.fillColor = 'white';
 
   Renderer.renderScore = function(score) {
     scoreText.content = 'Score: ' + (_.isNumber(score) && !_.isNaN(score) ? score : '');
   };
 
-  var timerText = new PointText(new Point(50, 350));
+  var timerText = new PointText(new Point(50, 200));
   timerText.justification = 'left';
-  timerText.style = {fontSize: '50px'};
+  timerText.style = {fontSize: '24px'};
   timerText.fillColor = 'white';
 
   Renderer.renderTimer = function(time) {
     timerText.content = 'Time: ' + (time >= 0 ? time + ' s': '');
   };
 
-  var userCountText = new PointText(new Point(50, 150));
+  var userCountText = new PointText(new Point(50, 100));
   userCountText.justification = 'left';
-  userCountText.style = {fontSize: '50px'};
+  userCountText.style = {fontSize: '24px'};
   userCountText.fillColor = 'white';
 
   Renderer.renderUserCount = function(count) {
