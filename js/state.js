@@ -68,22 +68,33 @@ define(function(require) {
   State.updateTimer = function() {
     State.timer = State.timer - 0.1;
     if ((State.timer <= 0) && (State.isHost)) {
+      if (!(_.reduce(State.completed, function(a, b){return a && b;}, true))) {
+        State.updateScore(-1);
+      }
       State.resetTimer();
     }
   };
 
   timeRef.on('value', function(snapshot) {
     State.timer = C.START_TIME;
+    userConnection.child('completed').set(false);
   });
 
   var userConnection = userRef.push({
-    id: State.userId
+    id: State.userId,
+    completed: false
   });
   userConnection.onDisconnect().remove();
 
   userRef.on('value', function(snapshot) {
     var users = _.pluck(_.toArray(snapshot.val()), 'id');
     State.instructions = _.pluck(_.toArray(snapshot.val()), 'instruction');
+    State.completed = _.pluck(_.toArray(snapshot.val()), 'completed');
+    if (_.reduce(State.completed, function(a, b){return a && b;}, true)) {
+      if (State.isHost) {
+        State.resetTimer();
+      }
+    }
     if (!State.users || _.contains(State.users, undefined) || users.length !== State.users.length) {
       State.loadUsers(users);
     }
@@ -100,6 +111,15 @@ define(function(require) {
     scoreRef.transaction(function(current_value) {
       return current_value + incr;
     });
+  };
+
+  State.finishInstruction = function() {
+    userConnection.transaction(function(current_value) {
+      var newval = current_value;
+      newval.completed = true;
+      return newval;
+    });
+    State.updateScore(1);
   };
 
   State.resetScore = function() {
