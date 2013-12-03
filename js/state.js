@@ -126,8 +126,25 @@ define(function(require) {
     scoreRef.set(0);
   };
   
+  State.resetGame = function() {
+    State.resetScore();
+    State.resetTimer();
+  }
+
   scoreRef.on('value', function(snapshot) {
     State.score = snapshot.val();
+    if (State.score >= C.VICTORY) {
+      alert("You won!");
+      if (State.isHost) {
+        State.resetGame();
+      }
+    }
+    if (State.score <= C.DEFEAT) {
+      alert("You died.");
+      if (State.isHost) {
+        State.resetGame();
+      }
+    }
   });
 
   return State;

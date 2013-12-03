@@ -5,6 +5,8 @@
 define(function(require) {
   return {
     UID_LEN: 32,
-    START_TIME: 10.0
+    START_TIME: 10.0,
+    VICTORY: 10,
+    DEFEAT: -5
   };
 });
